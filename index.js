@@ -35,6 +35,13 @@ async function run() {
       res.send(result)
     })
 
+    // Get list item from database
+    app.get('/addlist', async (req,res)=>{
+         const result = await dataCollection.find().toArray()
+         res.send(result)
+    })
+
+
 
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
@@ -53,7 +60,7 @@ run().catch(console.dir);
 
 
 
-app.use(cors());
+
 app.get('/',(req,res)=>{
     res.send('Server is running')
 })
