@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express()
 const port = 4000
 
@@ -27,6 +27,7 @@ async function run() {
     // Database create
      const database = client.db('PawMart')
      const dataCollection = database.collection('AddList');
+     const dataCollection2 = database.collection('Order')
     
     // Data post to database
     app.post('/addlist',async (req,res)=>{
@@ -39,6 +40,19 @@ async function run() {
     app.get('/addlist', async (req,res)=>{
          const result = await dataCollection.find().toArray()
          res.send(result)
+    })
+
+    app.get('/listdetails/:id', async(req,res)=>{
+      const id = req.params.id
+      const query = {_id: new ObjectId(id)}
+      const result = await dataCollection.findOne(query)
+      res.send(result)
+    })
+
+    app.post('/order', async (req,res) =>{
+      const data = req.body;
+      const result = await dataCollection2.insertOne(data)
+      res.send(result)
     })
 
 
