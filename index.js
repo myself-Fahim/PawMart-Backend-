@@ -55,6 +55,36 @@ async function run() {
       res.send(result)
     })
 
+    app.get('/mylistings/:email', async(req,res) =>{
+      const myEmail = req.params.email
+      const query = {email:myEmail}
+      const result = await dataCollection.find(query).toArray()
+      res.send(result)
+    })
+
+    app.get('/myorders/:email', async(req,res)=>{
+      const myEmail = req.params.email
+      const query = {email:myEmail}
+      const result = await dataCollection2.find(query).toArray()
+      res.send(result)
+    })
+
+    app.delete('/delete/:id', async (req,res)=>{
+      const myId = req.params.id;
+      const query = {_id: new ObjectId(myId) }
+      const result = await dataCollection.deleteOne(query)
+      res.send(result)
+    })
+    app.put('/update/:id', async (req,res)=>{
+      const data = req.body
+      const myId = req.params.id
+      const query = {_id:new ObjectId(myId)}
+      const updatedData = {
+        $set:data
+      }
+      const result = await dataCollection.updateOne(query,updatedData)
+    })
+
 
 
     await client.db("admin").command({ ping: 1 });
