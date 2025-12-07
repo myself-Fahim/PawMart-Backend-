@@ -85,6 +85,15 @@ async function run() {
       const result = await dataCollection.updateOne(query,updatedData)
     })
 
+    app.get('/categories/:categoryName',async (req,res)=>{
+      const myCategory = req.params.categoryName
+      const query = {category:myCategory}
+      const result = await dataCollection.find(query).toArray()
+      res.send(result)
+      
+
+    })
+
 
 
     await client.db("admin").command({ ping: 1 });
